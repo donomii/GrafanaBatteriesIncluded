@@ -1,0 +1,14 @@
+collectors:
+  enabled: cache,cpu,cpu_info,cs,dhcp,logical_disk,logon,memory,net,os,process,service,system,tcp,terminal_services,thermalzone,time
+collector:
+  service:
+    services-where: Name='windows_exporter'
+log:
+  level: debug
+scrape:
+  timeout-margin: 0.5
+telemetry:
+  addr: ":9182"
+  path: /metrics
+  max-requests: 5
+
