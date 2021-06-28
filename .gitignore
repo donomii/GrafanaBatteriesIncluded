@@ -1,4 +1,5 @@
 .idea
+linux/loki*
 linux/grafana*
 linux/prometheus*
 linux/node-exporter*
