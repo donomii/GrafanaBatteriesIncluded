@@ -1,0 +1,12 @@
+# Describes how Promtail connects to multiple instances
+clients:
+  - [<client_config>]
+
+# Describes how to save read file offsets to disk
+  [positions: <position_config>]
+
+scrape_configs:
+  - [<scrape_config>]
+
+# Configures how tailed targets will be watched.
+  [target_config: <target_config>]
