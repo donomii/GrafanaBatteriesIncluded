@@ -25,13 +25,16 @@ install:
 	rm *.zip
 
 run-loki:
-	pushd loki && ./loki-linux-amd64 --config.file=../conf/loki/default.yaml
+	pushd loki && ./loki-linux-amd64 --config.file=../conf/loki/default.yml
 
 run-grafana:
 	pushd grafana && bin/grafana-server --config ../conf/grafana/defaults.ini
 
 run-prometheus:
-	pushd prometheus && ./prometheus --config.file=../conf/prometheus/prometheus.yml
+	pushd prometheus && ./prometheus --config.file=../conf/prometheus/default.yml
 
 run-node-exporter:
 	sudo node-exporter/node_exporter --collector.systemd --collector.processes
+
+package:
+	snapcraft
