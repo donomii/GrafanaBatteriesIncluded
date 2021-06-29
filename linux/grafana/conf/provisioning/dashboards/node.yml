@@ -8,5 +8,5 @@ providers:
     allowUiUpdates: false
     updateIntervalSeconds: 10
     options:
-      path: ../conf/grafana/dashboards/node-exporter.json
+      path: ${SNAP}/grafana/conf/dashboards/node-exporter.json
       foldersFromFilesStructure: false

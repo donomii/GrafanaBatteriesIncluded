@@ -21,3 +21,8 @@ parts:
     stage:
       - -*.linux-amd64.tar.gz
       - -conf
+      - -build.sh
+
+apps:
+  grafana:
+    command: grafana/bin/grafana-server -config $SNAP/grafana/conf/defaults.ini -homepath $SNAP/grafana
