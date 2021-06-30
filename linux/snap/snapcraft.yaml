@@ -11,6 +11,10 @@ grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: devmode # use 'strict' once you have the right plugs and slots
 
 parts:
+  batteries:
+    source: batteries
+    source-type: local
+    plugin: dump
   grafana:
     source: grafana
     source-type: local
@@ -22,7 +26,23 @@ parts:
       - -*.linux-amd64.tar.gz
       - -conf
       - -build.sh
+  prometheus:
+    source: prometheus
+    source-type: local
+    plugin: dump
+    override-build: ./build.sh && snapcraftctl build
+    stage:
+      - -*linux-amd64.tar.gz
+      - -build.sh
+  exporter:
+    source: exporter
+    source-type: local
+    plugin: dump
+    override-build: ./build.sh && snapcraftctl build
+    stage:
+      - -*linux-amd64.tar.gz
+      - -build.sh
 
 apps:
-  grafana:
-    command: grafana/bin/grafana-server -config $SNAP/grafana/conf/defaults.ini -homepath $SNAP/grafana
+  grafana-batteries-included:
+    command: /bin/sh $SNAP/run/run.sh
