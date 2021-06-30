@@ -3,7 +3,6 @@ apiVersion: 1
 providers:
   - name: 'node'
     orgId: 1
-    uuid: rYdddlPWk
     type: file
     disableDeletion: true
     allowUiUpdates: true
