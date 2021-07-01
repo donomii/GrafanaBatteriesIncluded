@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"fmt"
 	"log"
 	"runtime"
@@ -58,6 +59,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	go func() {
+		time.Sleep(5*time.Second)
+		win.Iconify()
+	}()
 
 	win.MakeContextCurrent()
 
