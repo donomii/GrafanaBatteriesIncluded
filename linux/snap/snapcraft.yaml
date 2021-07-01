@@ -20,7 +20,7 @@ parts:
       - wget
     override-build: ./build.sh && snapcraftctl build
     stage:
-      - -*.linux-amd64.tar.gz
+      - -*.linux-amd64.tar.gz*
       - -conf
       - -build.sh
   prometheus:
@@ -29,7 +29,7 @@ parts:
     plugin: dump
     override-build: ./build.sh && snapcraftctl build
     stage:
-      - -*linux-amd64.tar.gz
+      - -*linux-amd64.tar.gz*
       - -build.sh
   exporter:
     source: exporter
@@ -37,7 +37,7 @@ parts:
     plugin: dump
     override-build: ./build.sh && snapcraftctl build
     stage:
-      - -*linux-amd64.tar.gz
+      - -*linux-amd64.tar.gz*
       - -build.sh
 
 apps:

@@ -1,12 +1,48 @@
 apiVersion: 1
 
 providers:
-  - name: 'node'
+  - name: 'basic'
     orgId: 1
     type: file
     disableDeletion: true
     allowUiUpdates: true
     updateIntervalSeconds: 10
     options:
-      path: ${SNAP}/grafana/conf/dashboards/node-exporter.json
+      path: ${SNAP}/grafana/conf/dashboards/basic.json
+      foldersFromFilesStructure: false
+  - name: 'network'
+    orgId: 1
+    type: file
+    disableDeletion: true
+    allowUiUpdates: true
+    updateIntervalSeconds: 10
+    options:
+      path: ${SNAP}/grafana/conf/dashboards/network.json
+      foldersFromFilesStructure: false
+  - name: 'memory'
+    orgId: 1
+    type: file
+    disableDeletion: true
+    allowUiUpdates: true
+    updateIntervalSeconds: 10
+    options:
+      path: ${SNAP}/grafana/conf/dashboards/memory.json
+      foldersFromFilesStructure: false
+  - name: 'system'
+    orgId: 1
+    type: file
+    disableDeletion: true
+    allowUiUpdates: true
+    updateIntervalSeconds: 10
+    options:
+      path: ${SNAP}/grafana/conf/dashboards/system.json
+      foldersFromFilesStructure: false
+  - name: 'disk'
+    orgId: 1
+    type: file
+    disableDeletion: true
+    allowUiUpdates: true
+    updateIntervalSeconds: 10
+    options:
+      path: ${SNAP}/grafana/conf/dashboards/disk.json
       foldersFromFilesStructure: false
