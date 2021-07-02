@@ -43,3 +43,11 @@ parts:
 apps:
   grafana-batteries-included:
     command: /bin/sh $SNAP/run/run.sh
+    plugs:
+      - network-bind
+      - time-control
+      - hardware-observe
+      - mount-observe
+      - network-observe
+      - system-observe
+
