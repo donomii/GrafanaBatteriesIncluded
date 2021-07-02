@@ -12,3 +12,5 @@ cp configs/prometheus.yml prometheus
 
 tar -xzvf node_exporter-1.1.2.darwin-amd64.tar.gz
 mv node_exporter-1.1.2.darwin-amd64/ node_exporter
+
+cd splash-screen && go build .
