@@ -63,6 +63,7 @@ var runningProcs []context.CancelFunc
 func drainChannel(ch chan []byte) {
 	for {
 		<-ch
+		time.Sleep(10 * time.Millisecond)
 	}
 }
 func main() {
@@ -206,6 +207,7 @@ func main() {
 
 		gfxMain(win, state)
 		glfw.PollEvents()
+		time.Sleep(10 * time.Millisecond)
 	}
 	shutdown()
 
@@ -225,20 +227,21 @@ func gfxMain(win *glfw.Window, state *State) {
 
 	// Render
 
-	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-
 	// Update
-	angle := state.Angle
-	time := glfw.GetTime()
-	elapsed := time - state.PreviousTime
 
-	if elapsed > 0.050 {
+	now := glfw.GetTime()
+	elapsed := now - state.PreviousTime
+
+	if elapsed > 0.050 && 1 != win.GetAttrib(glfw.Iconified) {
+		gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 		//fmt.Printf("elapsed: %v\n", elapsed)
-		state.PreviousTime = time
+		state.PreviousTime = now
+		angle := state.Angle
 		angle += elapsed
+		state.Angle = angle
 
 		model := mgl32.HomogRotate3D(float32(angle+rotX), mgl32.Vec3{0, 1, 0})
-		state.Angle = angle
+
 		// Render
 
 		gl.UniformMatrix4fv(state.ModelUniform, 1, false, &model[0])
@@ -246,7 +249,9 @@ func gfxMain(win *glfw.Window, state *State) {
 		gl.DrawArrays(gl.TRIANGLES, 0, 6*2*3)
 
 		win.SwapBuffers()
+
 	}
+	time.Sleep(10 * time.Millisecond)
 }
 
 func checkGlError() {
