@@ -1,4 +1,5 @@
 .idea
+grafana-batteries-included*.snap
 linux/loki/loki*
 linux/prometheus/prometheus*
 linux/node_exporter/node_exporter*
