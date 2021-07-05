@@ -1,5 +1,5 @@
 #!/bin/sh
 P=$(cd "$(dirname "$0")"; pwd)
 cd $P
-../Resources/splash-screen/splash-screen --launch "../Resources/grafana-serve && bin/grafana-server" --launch "cd ../Resources/prometheus --web.listen-address=127.0.0.1:9090  && ./prometheus" --launch "cd ../Resources/node_exporter && ./node_exporter" --launch "open http://localhost:3000/d/PJfhrbz7z/node-exporter-full-2?orgId=1&refresh=15s&from=now-5m&to=now"
+../Resources/splash-screen/splash-screen --launch "../Resources/grafana-server/bin/grafana-server" --launch "../Resources/prometheus/prometheus --web.listen-address=127.0.0.1:9090" --launch "../Resources/node_exporter/node_exporter" --launchShell "open http://localhost:3000/d/PJfhrbz7z/node-exporter-full-2?orgId=1&refresh=15s&from=now-5m&to=now"
 #osascript -e "tell app \"Finder\" to display dialog \"$P\"" 
