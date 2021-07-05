@@ -1,11 +1,22 @@
 package main
 
+//go:generate go mod init github.com/donomii/splash-screen
+//go:generate go mod tidy
+
 import (
-	"time"
+	"context"
+	"flag"
 	"fmt"
 	"log"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"runtime"
 	"runtime/debug"
+	"time"
+
+	"github.com/donomii/goof"
+	"github.com/mattn/go-shellwords"
 
 	//"time"
 
@@ -13,9 +24,9 @@ import (
 
 	"github.com/go-gl/gl/v3.2-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
-)
 
-import _ "embed"
+	_ "embed"
+)
 
 //go:embed logo.png
 var logo_bytes []byte
@@ -45,9 +56,46 @@ var winHeight = 180
 var lasttime float64
 
 var rotX, roty float64
+var launchShellList arrayFlags
+var launchList arrayFlags
+var runningProcs []context.CancelFunc
 
+func drainChannel(ch chan []byte) {
+	for {
+		<-ch
+	}
+}
 func main() {
-
+	flag.Var(&launchShellList, "launchShell", "Run shell command at start.  May be repeated to launch multiple commands.")
+	flag.Var(&launchList, "launch", "Command line to start an app.  May be repeated to launch multiple apps.")
+	flag.Parse()
+	for _, commandStr := range launchShellList {
+		ctx, cancel := context.WithCancel(context.Background())
+		command := exec.CommandContext(ctx, "/bin/sh", "-c", commandStr)
+		_, out, err := goof.WrapCmd(command, 3)
+		runningProcs = append(runningProcs, cancel)
+		go drainChannel(out)
+		go drainChannel(err)
+	}
+	currentDir, _ := os.Getwd()
+	for _, commandStr := range launchList {
+		log.Printf("Launching %v", commandStr)
+		os.Chdir(currentDir)
+		args, _ := shellwords.Parse(commandStr)
+		directory := filepath.Dir(args[0])
+		os.Chdir(directory)
+		exe := "./" + filepath.Base(args[0])
+		log.Printf("Exe %v", exe)
+		log.Printf("In dir %v", directory)
+		ctx, cancel := context.WithCancel(context.Background())
+		command := exec.CommandContext(ctx, exe, args[1:]...)
+		_, out, err := goof.WrapCmd(command, 3)
+		runningProcs = append(runningProcs, cancel)
+		go drainChannel(out)
+		go drainChannel(err)
+	}
+	os.Chdir(currentDir)
+	log.Println("Starting windowing system")
 	if err := glfw.Init(); err != nil {
 		panic(err)
 	}
@@ -60,7 +108,7 @@ func main() {
 		panic(err)
 	}
 	go func() {
-		time.Sleep(5*time.Second)
+		time.Sleep(5 * time.Second)
 		win.Iconify()
 	}()
 
@@ -159,7 +207,15 @@ func main() {
 		gfxMain(win, state)
 		glfw.PollEvents()
 	}
+	shutdown()
 
+}
+
+func shutdown() {
+	for x, cancelF := range runningProcs {
+		log.Printf("Stopping sub-process %v", x)
+		cancelF()
+	}
 }
 
 func gfxMain(win *glfw.Window, state *State) {

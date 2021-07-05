@@ -37,6 +37,7 @@ func handleKey(win *glfw.Window, key glfw.Key, scancode int, action glfw.Action,
 
 		case 256:
 			log.Println("Quitting")
+			shutdown()
 			win.SetShouldClose(true)
 
 		}
